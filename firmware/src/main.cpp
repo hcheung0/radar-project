@@ -1,0 +1,32 @@
+#include <Arduino.h>
+#include <Servo.h>
+
+Servo myServo;
+int trigPin = 7;
+int echoPin = 8;
+int servoPin = 9;
+
+int angle = 0;
+int increment = 1;
+int distance = 0; // ultrasonic sensor, uncovered for now
+
+void setup() {
+	pinMode(trigPin, OUTPUT);
+	pinMode(echoPin, INPUT);
+	myServo.attach(servoPin);
+}
+
+void loop() {
+	myServo.write(angle);
+	
+	Serial.print("{");
+	Serial.print(angle);
+	Serial.print(",");
+	Serial.print(distance);
+	Serial.print("}");
+	
+	angle += increment;
+	if (angle >= 180 || angle <= 0) {
+		increment *= -1;
+	}
+}
