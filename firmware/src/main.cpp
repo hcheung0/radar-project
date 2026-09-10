@@ -8,9 +8,19 @@ int servoPin = 9;
 
 int angle = 0;
 int increment = 1;
-int distance = 0; // ultrasonic sensor, uncovered for now
+int distance = 0; 
+
+int getDistance() {
+	digitalWrite(trigPin, LOW);
+	digitalWrite(trigPin, HIGH);
+	delayMicroseconds(10);
+	digitalWrite(trigPin, LOW);
+	int distanceCm = pulseIn(echoPin, HIGH) / 58;
+	return distanceCm;
+}
 
 void setup() {
+	Serial.begin(9600);
 	pinMode(trigPin, OUTPUT);
 	pinMode(echoPin, INPUT);
 	myServo.attach(servoPin);
@@ -18,6 +28,8 @@ void setup() {
 
 void loop() {
 	myServo.write(angle);
+
+	distance = getDistance();
 	
 	Serial.print("{");
 	Serial.print(angle);
@@ -29,4 +41,6 @@ void loop() {
 	if (angle >= 180 || angle <= 0) {
 		increment *= -1;
 	}
+
+	delay(100);
 }
