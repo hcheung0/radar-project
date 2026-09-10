@@ -7,7 +7,7 @@ int echoPin = 8;
 int servoPin = 9;
 
 int angle = 0;
-int increment = 1;
+int increment = 2;
 int distance = 0; 
 
 int getDistance() {
@@ -15,7 +15,7 @@ int getDistance() {
 	digitalWrite(trigPin, HIGH);
 	delayMicroseconds(10);
 	digitalWrite(trigPin, LOW);
-	int distanceCm = pulseIn(echoPin, HIGH) / 58;
+	int distanceCm = pulseIn(echoPin, HIGH, 25000) / 58;
 	return distanceCm;
 }
 
@@ -42,5 +42,5 @@ void loop() {
 		increment *= -1;
 	}
 
-	delay(100);
+	delay(50);
 }
