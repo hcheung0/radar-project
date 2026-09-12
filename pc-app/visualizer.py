@@ -19,11 +19,11 @@ def init_display():
     return screen
 
 
-def draw_frame(screen, reading, trail):
+def draw_frame(screen, reading, trail, font):
     screen.fill((0, 0, 0))
     center_x, center_y = get_center(screen)
 
-    draw_grid(screen, center_x, center_y)
+    draw_grid(screen, center_x, center_y, font)
 
     if reading is not None:
         pygame.draw.circle(screen, BASE_COLOR, polar_to_pixel(reading[0], reading[1], center_x, center_y), 3)
@@ -32,11 +32,16 @@ def draw_frame(screen, reading, trail):
     pygame.display.flip()
 
 
-def draw_grid(screen, center_x, center_y):
+def draw_grid(screen, center_x, center_y, font):
     for distance_cm in range(50, 401, 50):
         r = distance_cm * PIXELS_PER_CM
         rectangle = pygame.Rect(center_x-r, center_y-r, 2*r, 2*r)
         pygame.draw.arc(screen, (105, 105, 105), rectangle, 0, math.pi, 2)
+
+        label_pos = polar_to_pixel(90, distance_cm, center_x-17, center_y)
+        label_text = str(distance_cm) + "cm"
+        text_surface = font.render(label_text, True, (200, 200, 200))
+        screen.blit(text_surface, label_pos)
 
 
 def draw_trail(screen, trail, center_x, center_y):

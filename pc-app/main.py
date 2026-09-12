@@ -1,5 +1,6 @@
 import serial
 import time
+import pygame
 from visualizer import init_display, draw_frame, handle_events, MAX_AGE
 from reader import Reader
 
@@ -10,6 +11,7 @@ def main():
     running = True
     screen = init_display()
     trail = []
+    font = pygame.font.SysFont(None, 20)
 
     while running:
         running = handle_events()
@@ -19,12 +21,11 @@ def main():
             char = byte.decode('utf-8')
             r.handle_char(char)
         if r.latest_reading is not None and r.latest_reading != previous_reading:
-            print(r.latest_reading)
             previous_reading = r.latest_reading
             trail.append((r.latest_reading[0], r.latest_reading[1], time.time()))
 
         trail = [entry for entry in trail if (time.time()-entry[2]< MAX_AGE)]
-        draw_frame(screen, r.latest_reading, trail)
+        draw_frame(screen, r.latest_reading, trail, font)
 
 
 if __name__ == "__main__":
