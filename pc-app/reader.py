@@ -17,6 +17,12 @@ class Reader:
             self.comma_count += 1
             self.buffer += c
         elif c == '}':
+            if (self.comma_count != 1):
+                self.buffer = ""
+                self.comma_count = 0
+                self.start_time = None
+                return
+
             parts = self.buffer.split(",")
             try:
                 angle = int(parts[0])
@@ -24,9 +30,11 @@ class Reader:
                 self.latest_reading = (angle, distance)
             except ValueError:
                 self.buffer = ""
+                self.comma_count = 0
                 self.start_time = None
                 return
             self.buffer = ""
+            self.comma_count = 0
             self.start_time = None
         else:
             self.buffer += c
