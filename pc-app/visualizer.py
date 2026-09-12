@@ -2,31 +2,38 @@ import pygame
 import math
 
 PIXELS_PER_CM = 550/400
+MAX_RANGE = 400
+
+def get_center(screen):
+    center_x = screen.get_width() // 2
+    center_y = screen.get_height() - 10
+    return center_x, center_y
+
 
 def init_display():
     pygame.init()
     screen = pygame.display.set_mode((800, 600))
     return screen
 
+
 def draw_frame(screen, reading):
     screen.fill((0, 0, 0))
+    center_x, center_y = get_center(screen)
 
-    draw_grid(screen)
+    draw_grid(screen, center_x, center_y)
 
     if reading is not None:
-        pygame.draw.circle(screen, (0, 255, 0), polar_to_pixel(reading[0], reading[1], screen.get_width()//2, screen.get_height()-10), 3)
+        pygame.draw.circle(screen, (0, 255, 0), polar_to_pixel(reading[0], reading[1], center_x, center_y), 3)
+        pygame.draw.line(screen, (0, 120, 120), (center_x, center_y), polar_to_pixel(reading[0], MAX_RANGE, center_x, center_y), 1)
 
     pygame.display.flip()
 
-def draw_grid(screen):
-    center_x = screen.get_width()//2
-    center_y = screen.get_height() - 10
 
+def draw_grid(screen, center_x, center_y):
     for distance_cm in range(50, 401, 50):
         r = distance_cm * PIXELS_PER_CM
         rectangle = pygame.Rect(center_x-r, center_y-r, 2*r, 2*r)
         pygame.draw.arc(screen, (105, 105, 105), rectangle, 0, math.pi, 2)
-
 
 
 def handle_events():
@@ -35,6 +42,7 @@ def handle_events():
         if event.type == pygame.QUIT:
             running = False
     return running
+
 
 def polar_to_pixel(angle, distance, center_x, center_y):
     angle_rad = math.radians(angle)
