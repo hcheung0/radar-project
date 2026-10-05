@@ -40,4 +40,4 @@ pc-app/
 ```
 
 Known limitations
-Readings can suck due to a scuffed mount setup.
+- Readings can suck due to a scuffed mount setup.
