@@ -39,5 +39,5 @@ pc-app/
   visualizer.py     # pygame rendering
 ```
 
-## Known limitations
+Known limitations
 Readings can suck due to a scuffed mount setup.
